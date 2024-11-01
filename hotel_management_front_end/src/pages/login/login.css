@@ -1,0 +1,7 @@
+.pic-bg{
+    background-image: url("/ella-3621804_1280.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+}
