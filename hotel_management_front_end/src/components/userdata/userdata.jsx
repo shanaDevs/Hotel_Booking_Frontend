@@ -5,35 +5,46 @@ import { useEffect, useState } from "react";
 
 function UserTag(props) {
   const [name, setName] = useState("");
-  const token = localStorage.getItem("token");
+  const [userFound, setUserFound] = useState(false);
 
   useEffect(() => {
-    if (token) {
+  const token = localStorage.getItem("token");
+
+    if (token != null) {
       axios
         .get(import.meta.env.VITE_BACKEND_URL + "/api/users/", {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: "Bearer "+token,
             "Content-Type": "application/json",
           },
         })
         .then((res) => {
           console.log(res);
-          setName(`${res.data.user.Firstname} ${res.data.user.Lastname}`);
+          setName(res.data.user.Firstname + " "+res.data.user.Lastname);
+          setUserFound(true);
         })
         .catch((error) => console.error("Error fetching user:", error));
+    }else{
+      setName("")
     }
-  }, [token]);
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    console.log("Token after logout:", localStorage.getItem("token"));
-  };
+  }, [userFound]);
 
   return (
     <div className="absolute right-0 flex items-center cursor-pointer mr-2">
-      <img src={props.imageLink} className="rounded-[100%] w-[75px] h-[75px]" alt="User" />
+      <img
+        src={props.imageLink}
+        className="rounded-[100%] w-[75px] h-[75px]"
+        alt="User"
+      />
       <span className="text-white ml-[10px] text-xl">{name}</span>
-      <button onClick={handleLogout}>Log Out</button>
+      <button
+        onClick={() => {
+          localStorage.removeItem("token");
+          setUserFound(false);
+        }}
+      >
+        Log Out
+      </button>
     </div>
   );
 }

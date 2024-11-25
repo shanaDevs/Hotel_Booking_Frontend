@@ -13,10 +13,10 @@ export default function LoginPage(){
         }).then(
             (res) =>{
                 localStorage.setItem("token",res.data.token)
-                if(res.data.user.type ==="admin"){
-                    window.location.href="/admin/"
-                }else if(res.data.user.type ==="Customer"){
-                window.location.href="/"
+                if(res.data.user.type ==="Customer"){
+                    window.location.href="/"
+                }else if(res.data.user.type ==="Admin"){
+                window.location.href="/admin/"
                 }else{
                     alert('error user type')
                 }
